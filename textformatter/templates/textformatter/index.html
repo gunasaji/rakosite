@@ -1,0 +1,54 @@
+{% load static %}
+<body>
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+<link rel="stylesheet" href="{% static 'textformatter/style.css' %}">
+
+<h1 id="biches">TWEET FORMATTER</h1>
+
+<form method="get">
+  <select name="formShow">
+  {% for key, form in forms.items %}
+    <option value="{{key}}" {% if key == formShow %}selected{% endif %}>{{key}}</option>
+  {% endfor %}
+  </select>
+  
+  <input type="submit" value="Accept" >
+</form>
+
+<form method="GET">
+  {% for key, form in forms.items %}
+    {% if formShow == key %}
+      {{form.as_p}}
+    {% endif %}
+  {% endfor %}
+  <input type="submit" value="Submit">
+</form>
+
+<a href ="/textformatter"><input type="button" value ="reset"></a>
+
+{%if result%}
+<h2 id="resultText">{{result|linebreaks }}</h2>
+<!-- <input style="text-align:center; width: 50%;" type="text" value="{{result|linebreaks}}"id="yourtext"> -->
+<textarea style="text-align:left; width: 50%;" type="hidden" id="yourtext">{{result}}</textarea>
+<button style=" text-align:center;" onclick="CopyText()">Copy Text</button>
+{% endif %}
+
+{% block scripts %}
+<script>
+  var formtype = "newalbum"
+  function ChangeForm(form) {
+    console.log(form)
+    formtype = form
+  }
+  function CopyText() {
+  var text = document.getElementById('yourtext')
+  text.select();
+  document.execCommand('copy')
+}
+</script>
+{% endblock scripts %}
+</body>
